@@ -1,0 +1,1823 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta
+  name="viewport"
+  content="width=device-width,initial-scale=1,viewport-fit=cover"
+>
+<meta name="theme-color" content="#02070b">
+<title>J.A.R.V.I.S</title>
+
+<style>
+*{
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
+}
+
+html,
+body{
+  width:100%;
+  height:100%;
+  overflow:hidden;
+  background:#010407;
+  font-family:
+    Arial,
+    Helvetica,
+    sans-serif;
+  color:#c8faff;
+}
+
+body{
+  position:relative;
+}
+
+/* =====================================================
+   BACKGROUND
+   ===================================================== */
+
+body::before{
+  content:"";
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+
+  background:
+    radial-gradient(
+      circle at 50% 46%,
+      rgba(0,220,255,.10),
+      transparent 19%
+    ),
+    radial-gradient(
+      circle at 50% 50%,
+      rgba(0,120,255,.07),
+      transparent 42%
+    ),
+    linear-gradient(
+      180deg,
+      #02070b 0%,
+      #010407 50%,
+      #02070b 100%
+    );
+}
+
+body::after{
+  content:"";
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+
+  background:
+    linear-gradient(
+      rgba(100,220,255,.018) 1px,
+      transparent 1px
+    ),
+    linear-gradient(
+      90deg,
+      rgba(100,220,255,.018) 1px,
+      transparent 1px
+    );
+
+  background-size:
+    42px 42px;
+
+  mask-image:
+    radial-gradient(
+      ellipse at center,
+      black 0%,
+      transparent 72%
+    );
+}
+
+/* =====================================================
+   APP
+   ===================================================== */
+
+.app{
+  position:relative;
+  width:100%;
+  height:100%;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  isolation:isolate;
+}
+
+/* =====================================================
+   TOP HEADER
+   ===================================================== */
+
+.brand{
+  position:absolute;
+  top:5.2vh;
+  left:50%;
+  transform:translateX(-50%);
+
+  text-align:center;
+
+  z-index:20;
+}
+
+.brand h1{
+  font-size:
+    clamp(27px,6vw,55px);
+
+  font-weight:300;
+
+  letter-spacing:
+    .48em;
+
+  padding-left:
+    .48em;
+
+  color:
+    rgba(222,251,255,.94);
+
+  text-shadow:
+    0 0 5px rgba(0,225,255,.9),
+    0 0 18px rgba(0,190,255,.55),
+    0 0 42px rgba(0,140,255,.18);
+}
+
+.brand p{
+  margin-top:9px;
+
+  font-size:8px;
+
+  letter-spacing:.38em;
+
+  padding-left:.38em;
+
+  color:
+    rgba(150,235,255,.45);
+}
+
+/* =====================================================
+   CLOCK
+   ===================================================== */
+
+.clock{
+  position:absolute;
+
+  top:5.8vh;
+  right:4vw;
+
+  font-size:8px;
+
+  letter-spacing:.2em;
+
+  color:
+    rgba(157,235,255,.42);
+
+  z-index:20;
+}
+
+/* =====================================================
+   CENTRAL CORE STAGE
+   ===================================================== */
+
+.reactor{
+  position:relative;
+
+  width:min(84vw,510px);
+  aspect-ratio:1;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+/* subtle circular atmosphere */
+
+.reactor::before{
+  content:"";
+
+  position:absolute;
+
+  width:73%;
+  height:73%;
+
+  border-radius:50%;
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(0,225,255,.045),
+      rgba(0,130,255,.018) 38%,
+      transparent 70%
+    );
+
+  filter:blur(12px);
+
+  animation:
+    atmosphere 5s ease-in-out infinite;
+}
+
+@keyframes atmosphere{
+  0%,
+  100%{
+    transform:scale(.94);
+    opacity:.55;
+  }
+
+  50%{
+    transform:scale(1.06);
+    opacity:1;
+  }
+}
+
+/* =====================================================
+   HUD MARKS
+   ===================================================== */
+
+.hud{
+  position:absolute;
+  inset:5%;
+
+  pointer-events:none;
+}
+
+.hud-line{
+  position:absolute;
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgba(75,224,255,.42),
+      transparent
+    );
+
+  opacity:.55;
+}
+
+.hud-line.horizontal{
+  width:100%;
+  height:1px;
+
+  left:0;
+  top:50%;
+}
+
+.hud-line.vertical{
+  width:1px;
+  height:100%;
+
+  left:50%;
+  top:0;
+
+  background:
+    linear-gradient(
+      180deg,
+      transparent,
+      rgba(75,224,255,.42),
+      transparent
+    );
+}
+
+/* corner HUD */
+
+.corner{
+  position:absolute;
+
+  width:43px;
+  height:43px;
+
+  opacity:.7;
+}
+
+.corner::before,
+.corner::after{
+  content:"";
+
+  position:absolute;
+
+  background:#52eaff;
+
+  box-shadow:
+    0 0 7px rgba(0,220,255,.7);
+}
+
+.corner::before{
+  width:100%;
+  height:1px;
+}
+
+.corner::after{
+  width:1px;
+  height:100%;
+}
+
+.corner.tl{
+  top:8%;
+  left:8%;
+}
+
+.corner.tr{
+  top:8%;
+  right:8%;
+
+  transform:scaleX(-1);
+}
+
+.corner.bl{
+  bottom:8%;
+  left:8%;
+
+  transform:scaleY(-1);
+}
+
+.corner.br{
+  bottom:8%;
+  right:8%;
+
+  transform:
+    scale(-1);
+}
+
+/* =====================================================
+   FLOATING DATA POINTS
+   ===================================================== */
+
+.node{
+  position:absolute;
+
+  width:5px;
+  height:5px;
+
+  border-radius:50%;
+
+  background:#bafaff;
+
+  box-shadow:
+    0 0 5px #00eaff,
+    0 0 16px rgba(0,210,255,.9);
+}
+
+.n1{
+  left:18%;
+  top:31%;
+}
+
+.n2{
+  right:17%;
+  top:29%;
+}
+
+.n3{
+  left:23%;
+  bottom:26%;
+}
+
+.n4{
+  right:22%;
+  bottom:23%;
+}
+
+/* =====================================================
+   CENTRAL CORE
+   ===================================================== */
+
+.core{
+  position:absolute;
+
+  left:50%;
+  top:50%;
+
+  width:45%;
+  aspect-ratio:1;
+
+  transform:
+    translate(-50%,-50%);
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  z-index:10;
+}
+
+/* outer glow */
+
+.core-glow{
+  position:absolute;
+
+  width:94%;
+  height:94%;
+
+  border-radius:50%;
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(0,225,255,.18) 0%,
+      rgba(0,195,255,.08) 28%,
+      rgba(0,110,255,.025) 52%,
+      transparent 72%
+    );
+
+  filter:blur(8px);
+
+  animation:
+    coreBreath 3.2s ease-in-out infinite;
+}
+
+@keyframes coreBreath{
+  0%,
+  100%{
+    transform:scale(.88);
+    opacity:.55;
+  }
+
+  50%{
+    transform:scale(1.13);
+    opacity:1;
+  }
+}
+
+/* =====================================================
+   TRIANGULAR ARC CORE
+   ===================================================== */
+
+.core-svg{
+  position:absolute;
+
+  width:100%;
+  height:100%;
+
+  overflow:visible;
+
+  filter:
+    drop-shadow(
+      0 0 3px rgba(114,245,255,.95)
+    )
+    drop-shadow(
+      0 0 11px rgba(0,225,255,.85)
+    )
+    drop-shadow(
+      0 0 28px rgba(0,150,255,.45)
+    );
+
+  animation:
+    coreFloat 3.2s ease-in-out infinite;
+}
+
+@keyframes coreFloat{
+  0%,
+  100%{
+    transform:scale(.96);
+  }
+
+  50%{
+    transform:scale(1.035);
+  }
+}
+
+.outer-triangle{
+  fill:
+    rgba(0,195,255,.025);
+
+  stroke:
+    rgba(102,239,255,.9);
+
+  stroke-width:
+    1.35;
+
+  stroke-linejoin:
+    round;
+}
+
+.inner-triangle{
+  fill:
+    rgba(0,220,255,.055);
+
+  stroke:
+    rgba(63,218,255,.72);
+
+  stroke-width:
+    1;
+
+  stroke-linejoin:
+    round;
+}
+
+.energy-triangle{
+  fill:
+    rgba(100,240,255,.13);
+
+  stroke:
+    rgba(204,252,255,.96);
+
+  stroke-width:
+    1;
+
+  stroke-linejoin:
+    round;
+}
+
+/* center energy */
+
+.energy-core{
+  fill:
+    rgba(225,255,255,.95);
+
+  filter:
+    url(#coreGlow);
+}
+
+/* =====================================================
+   ENERGY BEAMS
+   ===================================================== */
+
+.beam{
+  position:absolute;
+
+  width:65%;
+  height:1px;
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgba(88,238,255,.8),
+      transparent
+    );
+
+  box-shadow:
+    0 0 8px rgba(0,225,255,.9);
+
+  opacity:.38;
+}
+
+.beam.one{
+  transform:rotate(60deg);
+}
+
+.beam.two{
+  transform:rotate(-60deg);
+}
+
+.beam.three{
+  transform:rotate(0deg);
+}
+
+/* =====================================================
+   CORE STATUS
+   ===================================================== */
+
+.core-label{
+  position:absolute;
+
+  bottom:-27%;
+
+  font-size:7px;
+
+  letter-spacing:.32em;
+
+  padding-left:.32em;
+
+  color:
+    rgba(155,240,255,.42);
+
+  white-space:nowrap;
+}
+
+/* =====================================================
+   SIDE DATA
+   ===================================================== */
+
+.leftinfo,
+.rightinfo{
+  position:absolute;
+
+  bottom:7vh;
+
+  font-size:7px;
+
+  line-height:2.15;
+
+  letter-spacing:.18em;
+
+  color:
+    rgba(153,236,255,.34);
+
+  z-index:20;
+}
+
+.leftinfo{
+  left:4vw;
+}
+
+.rightinfo{
+  right:4vw;
+  text-align:right;
+}
+
+/* =====================================================
+   STATUS
+   ===================================================== */
+
+.status{
+  position:absolute;
+
+  left:50%;
+  bottom:5vh;
+
+  transform:
+    translateX(-50%);
+
+  width:min(320px,62vw);
+
+  text-align:center;
+
+  z-index:20;
+}
+
+.state{
+  font-size:8px;
+
+  letter-spacing:.32em;
+
+  padding-left:.32em;
+
+  color:
+    rgba(178,243,255,.58);
+
+  white-space:nowrap;
+}
+
+.bar{
+  position:relative;
+
+  width:100%;
+  height:1px;
+
+  margin-top:11px;
+
+  background:
+    rgba(77,221,255,.09);
+
+  overflow:hidden;
+}
+
+.bar i{
+  display:block;
+
+  width:42%;
+  height:100%;
+
+  margin:auto;
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      #50eaff,
+      transparent
+    );
+
+  box-shadow:
+    0 0 8px #00ddff;
+
+  animation:
+    statusLoad 3.4s ease-in-out infinite;
+}
+
+@keyframes statusLoad{
+  0%,
+  100%{
+    width:28%;
+    opacity:.45;
+  }
+
+  50%{
+    width:76%;
+    opacity:1;
+  }
+}
+
+/* =====================================================
+   MICROPHONE
+   ===================================================== */
+
+#voiceLock{
+  position:fixed;
+
+  left:50%;
+  bottom:11vh;
+
+  transform:
+    translateX(-50%);
+
+  z-index:30;
+
+  text-align:center;
+
+  color:#b9f8ff;
+}
+
+/* mic shell */
+
+#micBtn{
+  position:relative;
+
+  width:66px;
+  height:66px;
+
+  border-radius:50%;
+
+  border:
+    1px solid
+    rgba(96,232,255,.58);
+
+  background:
+    radial-gradient(
+      circle at 50% 42%,
+      rgba(0,225,255,.14),
+      rgba(3,25,35,.7) 50%,
+      rgba(1,7,11,.95) 72%
+    );
+
+  color:#caffff;
+
+  font-size:0;
+
+  cursor:pointer;
+
+  outline:none;
+
+  box-shadow:
+    0 0 14px rgba(0,205,255,.18),
+    inset 0 0 18px rgba(0,190,255,.07);
+
+  transition:
+    transform .2s ease,
+    box-shadow .25s ease,
+    border-color .25s ease;
+}
+
+#micBtn::before{
+  content:"";
+
+  position:absolute;
+
+  left:50%;
+  top:50%;
+
+  width:20px;
+  height:27px;
+
+  transform:
+    translate(-50%,-55%);
+
+  border:
+    1.5px solid #aef8ff;
+
+  border-radius:11px;
+
+  box-shadow:
+    0 0 7px rgba(0,220,255,.75);
+}
+
+#micBtn::after{
+  content:"";
+
+  position:absolute;
+
+  left:50%;
+  top:50%;
+
+  width:34px;
+  height:34px;
+
+  transform:
+    translate(-50%,-50%);
+
+  border:
+    1px solid
+    rgba(76,228,255,.2);
+
+  border-radius:50%;
+}
+
+#micBtn:hover{
+  transform:scale(1.05);
+
+  border-color:
+    rgba(115,242,255,.95);
+
+  box-shadow:
+    0 0 20px rgba(0,220,255,.42),
+    0 0 45px rgba(0,170,255,.14),
+    inset 0 0 20px rgba(0,220,255,.1);
+}
+
+#micBtn:active{
+  transform:scale(.94);
+}
+
+/* microphone stand */
+
+#voiceState{
+  margin-top:10px;
+
+  font-size:7px;
+
+  letter-spacing:.28em;
+
+  padding-left:.28em;
+
+  color:
+    rgba(169,241,255,.46);
+
+  white-space:nowrap;
+}
+
+/* =====================================================
+   LISTENING
+   ===================================================== */
+
+.reactor.listening .core-glow{
+  animation:
+    listeningGlow .7s ease-in-out infinite;
+}
+
+.reactor.listening .core-svg{
+  animation:
+    listeningCore .7s ease-in-out infinite;
+}
+
+.reactor.listening ~ * #micBtn,
+body:has(.reactor.listening) #micBtn{
+  border-color:
+    rgba(113,246,255,1);
+
+  box-shadow:
+    0 0 20px rgba(0,235,255,.65),
+    0 0 50px rgba(0,210,255,.25);
+}
+
+@keyframes listeningGlow{
+  0%,
+  100%{
+    transform:scale(.88);
+    opacity:.6;
+  }
+
+  50%{
+    transform:scale(1.18);
+    opacity:1;
+  }
+}
+
+@keyframes listeningCore{
+  0%,
+  100%{
+    transform:scale(.96);
+  }
+
+  50%{
+    transform:scale(1.09);
+  }
+}
+
+/* =====================================================
+   THINKING
+   ===================================================== */
+
+.reactor.thinking .core-svg{
+  animation:
+    thinkingCore .55s ease-in-out infinite;
+}
+
+.reactor.thinking .core-glow{
+  animation:
+    thinkingGlow .9s ease-in-out infinite;
+}
+
+@keyframes thinkingCore{
+  0%{
+    transform:scale(.96);
+  }
+
+  50%{
+    transform:scale(1.035);
+  }
+
+  100%{
+    transform:scale(.96);
+  }
+}
+
+@keyframes thinkingGlow{
+  0%,
+  100%{
+    opacity:.5;
+  }
+
+  50%{
+    opacity:1;
+  }
+}
+
+/* =====================================================
+   SPEAKING
+   ===================================================== */
+
+.reactor.speaking .core-svg{
+  animation:
+    speakingCore 1.1s ease-in-out infinite;
+}
+
+.reactor.speaking .core-glow{
+  animation:
+    speakingGlow 1.1s ease-in-out infinite;
+}
+
+@keyframes speakingCore{
+  0%,
+  100%{
+    transform:scale(.97);
+  }
+
+  50%{
+    transform:scale(1.055);
+  }
+}
+
+@keyframes speakingGlow{
+  0%,
+  100%{
+    transform:scale(.9);
+    opacity:.55;
+  }
+
+  50%{
+    transform:scale(1.12);
+    opacity:1;
+  }
+}
+
+/* =====================================================
+   RESPONSIVE
+   ===================================================== */
+
+@media(max-width:600px){
+
+  .brand{
+    top:4.2vh;
+  }
+
+  .brand h1{
+    font-size:
+      clamp(25px,7vw,42px);
+
+    letter-spacing:.42em;
+    padding-left:.42em;
+  }
+
+  .brand p{
+    font-size:6px;
+    letter-spacing:.27em;
+    padding-left:.27em;
+  }
+
+  .clock,
+  .leftinfo,
+  .rightinfo{
+    display:none;
+  }
+
+  .reactor{
+    width:94vw;
+    max-width:460px;
+  }
+
+  .status{
+    bottom:4vh;
+    width:65vw;
+  }
+
+  .state{
+    font-size:7px;
+  }
+
+  #voiceLock{
+    bottom:10vh;
+  }
+}
+
+@media(max-height:650px){
+
+  .brand{
+    top:2.5vh;
+  }
+
+  .reactor{
+    width:70vh;
+    max-width:440px;
+  }
+
+  #voiceLock{
+    bottom:6vh;
+  }
+
+  .status{
+    bottom:2vh;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<div class="app">
+
+  <!-- =================================================
+       BRAND
+       ================================================= -->
+
+  <div class="brand">
+
+    <h1>J.A.R.V.I.S</h1>
+
+    <p>
+      JUST A RATHER VERY INTELLIGENT SYSTEM
+    </p>
+
+  </div>
+
+
+  <!-- =================================================
+       CLOCK
+       ================================================= -->
+
+  <div
+    class="clock"
+    id="clock"
+  >
+    SYSTEM TIME // --:--:--
+  </div>
+
+
+  <!-- =================================================
+       REACTOR
+       ================================================= -->
+
+  <div class="reactor">
+
+    <div class="hud">
+
+      <div class="hud-line horizontal"></div>
+      <div class="hud-line vertical"></div>
+
+      <div class="corner tl"></div>
+      <div class="corner tr"></div>
+      <div class="corner bl"></div>
+      <div class="corner br"></div>
+
+    </div>
+
+
+    <i class="node n1"></i>
+    <i class="node n2"></i>
+    <i class="node n3"></i>
+    <i class="node n4"></i>
+
+
+    <!-- =================================================
+         CORE
+         ================================================= -->
+
+    <div class="core">
+
+      <div class="core-glow"></div>
+
+      <div class="beam one"></div>
+      <div class="beam two"></div>
+      <div class="beam three"></div>
+
+      <svg
+        class="core-svg"
+        viewBox="0 0 200 200"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+
+        <defs>
+
+          <filter
+            id="coreGlow"
+            x="-200%"
+            y="-200%"
+            width="400%"
+            height="400%"
+          >
+
+            <feGaussianBlur
+              stdDeviation="3.5"
+              result="blur"
+            />
+
+            <feMerge>
+
+              <feMergeNode
+                in="blur"
+              />
+
+              <feMergeNode
+                in="SourceGraphic"
+              />
+
+            </feMerge>
+
+          </filter>
+
+        </defs>
+
+
+        <!-- Outer geometric triangle -->
+
+        <polygon
+          class="outer-triangle"
+          points="
+            100,17
+            184,166
+            16,166
+          "
+        />
+
+
+        <!-- Inner geometric triangle -->
+
+        <polygon
+          class="inner-triangle"
+          points="
+            100,43
+            157,143
+            43,143
+          "
+        />
+
+
+        <!-- Central energy triangle -->
+
+        <polygon
+          class="energy-triangle"
+          points="
+            100,72
+            127,122
+            73,122
+          "
+          filter="url(#coreGlow)"
+        />
+
+
+        <!-- Central energy point -->
+
+        <circle
+          class="energy-core"
+          cx="100"
+          cy="105"
+          r="6"
+        />
+
+      </svg>
+
+
+      <div class="core-label">
+        NEURAL CORE // ONLINE
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- =================================================
+       SIDE DATA
+       ================================================= -->
+
+  <div class="leftinfo">
+
+    NEURAL CORE<br>
+    ONLINE<br>
+    MEMORY ACTIVE
+
+  </div>
+
+
+  <div class="rightinfo">
+
+    AUDIO LINK<br>
+    STANDBY<br>
+    NETWORK OK
+
+  </div>
+
+
+  <!-- =================================================
+       STATUS
+       ================================================= -->
+
+  <div class="status">
+
+    <div
+      class="state"
+      id="systemState"
+    >
+      SYSTEM ONLINE // AWAITING COMMAND
+    </div>
+
+    <div class="bar">
+      <i></i>
+    </div>
+
+  </div>
+
+</div>
+
+
+<!-- =====================================================
+     VOICE CONTROL
+     ===================================================== -->
+
+<div id="voiceLock">
+
+  <button
+    id="micBtn"
+    aria-label="Aktifkan JARVIS"
+  >
+    MIC
+  </button>
+
+  <div id="voiceState">
+    VOICE LOCK // STANDBY
+  </div>
+
+</div>
+
+
+<script>
+
+/* =====================================================
+   CLOCK
+   ===================================================== */
+
+function updateClock(){
+
+  const d =
+    new Date();
+
+  document.getElementById(
+    "clock"
+  ).textContent =
+    "SYSTEM TIME // " +
+    d.toLocaleTimeString(
+      "id-ID",
+      {
+        hour12:false
+      }
+    );
+
+}
+
+updateClock();
+
+setInterval(
+  updateClock,
+  1000
+);
+
+
+/* =====================================================
+   ELEMENTS
+   ===================================================== */
+
+const btn =
+  document.getElementById(
+    "micBtn"
+  );
+
+const state =
+  document.getElementById(
+    "voiceState"
+  );
+
+const systemState =
+  document.getElementById(
+    "systemState"
+  );
+
+const reactor =
+  document.querySelector(
+    ".reactor"
+  );
+
+
+/* =====================================================
+   STATE
+   ===================================================== */
+
+function setState(text){
+
+  state.textContent =
+    text;
+
+  systemState.textContent =
+    text;
+
+  reactor.classList.toggle(
+    "listening",
+    text.includes("LISTENING")
+  );
+
+  reactor.classList.toggle(
+    "thinking",
+    text.includes("THINKING")
+  );
+
+  reactor.classList.toggle(
+    "speaking",
+    text.includes("SPEAKING")
+  );
+
+}
+
+
+/* =====================================================
+   CONVERSATION HISTORY
+   ===================================================== */
+
+let conversationHistory = [];
+
+
+/* =====================================================
+   TEXT TO SPEECH
+   ===================================================== */
+
+function speakBrowser(
+  text
+){
+
+  if(
+    !(
+      "speechSynthesis"
+      in window
+    )
+  ){
+
+    setState(
+      "VOICE LOCK // STANDBY"
+    );
+
+    return;
+
+  }
+
+
+  speechSynthesis.cancel();
+
+
+  const u =
+    new SpeechSynthesisUtterance(
+      text
+    );
+
+
+  u.lang =
+    "id-ID";
+
+  u.rate =
+    .92;
+
+  u.pitch =
+    .72;
+
+
+  const voices =
+    speechSynthesis.getVoices();
+
+
+  const v =
+    voices.find(
+      x =>
+        x.lang &&
+        x.lang
+          .toLowerCase()
+          .startsWith("id")
+    );
+
+
+  if(v){
+
+    u.voice =
+      v;
+
+  }
+
+
+  u.onstart =
+    () => {
+
+      setState(
+        "JARVIS // SPEAKING"
+      );
+
+    };
+
+
+  u.onend =
+    () => {
+
+      setState(
+        "VOICE LOCK // STANDBY"
+      );
+
+    };
+
+
+  u.onerror =
+    () => {
+
+      setState(
+        "VOICE LOCK // STANDBY"
+      );
+
+    };
+
+
+  speechSynthesis.speak(
+    u
+  );
+
+}
+
+
+/* =====================================================
+   GEMINI / NETLIFY
+   ===================================================== */
+
+async function askJarvis(
+  message
+){
+
+  setState(
+    "JARVIS // THINKING"
+  );
+
+
+  try{
+
+    const r =
+      await fetch(
+        "/.netlify/functions/chat",
+        {
+          method:"POST",
+
+          headers:{
+            "Content-Type":
+              "application/json"
+          },
+
+          body:
+            JSON.stringify({
+
+              message,
+
+              history:
+                conversationHistory
+
+            })
+
+        }
+      );
+
+
+    const data =
+      await r
+        .json()
+        .catch(
+          () => ({})
+        );
+
+
+    if(
+      !r.ok ||
+      !data.answer
+    ){
+
+      throw new Error(
+        data.error ||
+        "Gemini tidak merespons"
+      );
+
+    }
+
+
+    const answer =
+      String(
+        data.answer
+      ).trim();
+
+
+    /* ================================================
+       SAVE CONVERSATION
+       ================================================ */
+
+    conversationHistory.push({
+
+      role:"user",
+
+      content:
+        message
+
+    });
+
+
+    conversationHistory.push({
+
+      role:"assistant",
+
+      content:
+        answer
+
+    });
+
+
+    conversationHistory =
+      conversationHistory.slice(
+        -12
+      );
+
+
+    /*
+      Jangan tampilkan command
+      atau jawaban ke layar.
+      Jawaban langsung dibacakan.
+    */
+
+    speakBrowser(
+      answer
+    );
+
+
+  }catch(err){
+
+    console.error(
+      "JARVIS connection error:",
+      err
+    );
+
+
+    setState(
+      "SYSTEM // OFFLINE"
+    );
+
+
+    speakBrowser(
+      "Maaf, sistem AI sedang mengalami gangguan koneksi."
+    );
+
+
+    setTimeout(
+      () => {
+
+        setState(
+          "VOICE LOCK // STANDBY"
+        );
+
+      },
+      2500
+    );
+
+  }
+
+}
+
+
+/* =====================================================
+   SPEECH RECOGNITION
+   ===================================================== */
+
+const SR =
+  window.SpeechRecognition ||
+  window.webkitSpeechRecognition;
+
+
+if(!SR){
+
+  setState(
+    "VOICE INPUT // UNSUPPORTED"
+  );
+
+}else{
+
+  const rec =
+    new SR();
+
+
+  rec.lang =
+    "id-ID";
+
+  rec.continuous =
+    false;
+
+  rec.interimResults =
+    false;
+
+  rec.maxAlternatives =
+    1;
+
+
+  let busy =
+    false;
+
+
+  /* ===================================================
+     MIC CLICK
+     =================================================== */
+
+  btn.onclick =
+    () => {
+
+      if(busy){
+
+        return;
+
+      }
+
+
+      busy =
+        true;
+
+
+      try{
+
+        setState(
+          "JARVIS // LISTENING"
+        );
+
+
+        rec.start();
+
+
+      }catch(e){
+
+        busy =
+          false;
+
+
+        setState(
+          "VOICE LOCK // STANDBY"
+        );
+
+      }
+
+    };
+
+
+  /* ===================================================
+     RESULT
+     =================================================== */
+
+  rec.onresult =
+    (e) => {
+
+      const text =
+        e
+          .results?.[0]?.[0]
+          ?.transcript
+          ?.trim();
+
+
+      if(!text){
+
+        busy =
+          false;
+
+
+        setState(
+          "VOICE LOCK // STANDBY"
+        );
+
+
+        return;
+
+      }
+
+
+      askJarvis(
+        text
+      );
+
+    };
+
+
+  /* ===================================================
+     ERROR
+     =================================================== */
+
+  rec.onerror =
+    (e) => {
+
+      console.error(
+        "Voice recognition:",
+        e
+      );
+
+
+      busy =
+        false;
+
+
+      setState(
+        "VOICE LOCK // STANDBY"
+      );
+
+    };
+
+
+  /* ===================================================
+     END
+     =================================================== */
+
+  rec.onend =
+    () => {
+
+      busy =
+        false;
+
+    };
+
+}
+
+
+/* =====================================================
+   LOAD VOICES
+   ===================================================== */
+
+if(
+  "speechSynthesis"
+  in window
+){
+
+  speechSynthesis.onvoiceschanged =
+    () => {
+
+      speechSynthesis
+        .getVoices();
+
+    };
+
+}
+
+
+/* =====================================================
+   SERVICE WORKER / PWA
+   ===================================================== */
+
+if(
+  "serviceWorker"
+  in navigator
+){
+
+  window.addEventListener(
+    "load",
+    () => {
+
+      navigator.serviceWorker
+        .register(
+          "/sw.js"
+        )
+        .then(
+          () => {
+
+            console.log(
+              "JARVIS Service Worker aktif."
+            );
+
+          }
+        )
+        .catch(
+          error => {
+
+            console.error(
+              "Service Worker gagal:",
+              error
+            );
+
+          }
+        );
+
+    }
+  );
+
+}
+
+</script>
+
+</body>
+</html>
